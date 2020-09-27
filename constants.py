@@ -1,5 +1,5 @@
 # window settings
-SIDE = 800
+SIDE = 1000
 
 # pawn settings
 SQUARE_SIDE = SIDE / 8
