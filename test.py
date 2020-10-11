@@ -1,3 +1,3 @@
-move = 33
-
-if not move: print(5)
+import random
+for i in range(16):
+    print(random.randint(1,2))
