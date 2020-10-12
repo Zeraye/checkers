@@ -41,7 +41,7 @@ def count_pawns(color, pawns, type = 0):
 def count_upgraded(color, pawns):
     i = 0
     for pawn in pawns:
-        if pawn.get_type() == 1: i += 1
+        if pawn.get_type() == 1 and pawn.get_color() == color: i += 1
     return i
 
 
@@ -111,33 +111,33 @@ def manage_move(old_pos, new_pos, pawns, player1):
 
 # function for calculating advantage
 def calc_advantage(pawns, old_pawns):
-    advantage = 0
+    cukierki = 0  # advantage
     # winning
-    if count_pawns(1, pawns) == 0 or len(possible_moves(pawns, 1)) == 0: advantage += math.inf
+    if len(possible_moves(pawns, 1)) == 0: cukierki += math.inf
     # losing
-    if count_pawns(0, pawns) == 0 or len(possible_moves(pawns, 0)) == 0: advantage -= math.inf
+    if len(possible_moves(pawns, 0)) == 0: cukierki -= math.inf
     # upgrading own pawn
-    if count_upgraded(0, pawns) > count_upgraded(0, old_pawns): advantage += 7
+    if count_upgraded(0, pawns) > count_upgraded(0, old_pawns): cukierki += 10
     # upgrading enemy's pawn
-    if count_upgraded(1, pawns) > count_upgraded(1, old_pawns): advantage -= 7
+    if count_upgraded(1, pawns) > count_upgraded(1, old_pawns): cukierki -= 10
     # capturing enemy's upgraded pawn
-    if count_pawns(1, pawns, 1) < count_pawns(1, old_pawns, 1): advantage += 5
+    if count_pawns(1, pawns, 1) < count_pawns(1, old_pawns, 1): cukierki += 5
     # having upgraded pawn captured
-    if count_pawns(0, pawns, 1) < count_pawns(0, old_pawns, 1): advantage -= 5
+    if count_pawns(0, pawns, 1) < count_pawns(0, old_pawns, 1): cukierki -= 5
     # capturing enemy's pawn
-    if count_pawns(1, pawns) < count_pawns(1, old_pawns): advantage += 3
+    if count_pawns(1, pawns) < count_pawns(1, old_pawns): cukierki += 3
     # having pawn captured
-    if count_pawns(0, pawns) < count_pawns(0, old_pawns): advantage -= 3
+    if count_pawns(0, pawns) < count_pawns(0, old_pawns): cukierki -= 3
     # having more possible moves after move or enemy has less possible moves
     if len(possible_moves(pawns, 0)) > len(possible_moves(old_pawns, 0)) or \
         len(possible_moves(pawns, 1)) < len(possible_moves(old_pawns, 1)):
-            advantage += 1
+            cukierki += 1
     # having less possible moves after move or enemy has more possible moves
     if len(possible_moves(pawns, 0)) < len(possible_moves(old_pawns, 0)) or \
         len(possible_moves(pawns, 1)) > len(possible_moves(old_pawns, 1)):
-            advantage -= 1
+            cukierki -= 1
     # returning advantage
-    return advantage
+    return cukierki
 
 def make_best_move(pawns, player1, max_depth):
     print('[AI] MAX DEPTH = {}'.format(max_depth))
@@ -153,12 +153,12 @@ def make_best_move(pawns, player1, max_depth):
         manage_move(move[0], move[1], pawns, player1)
         # score = minimax(False, 0, max_depth, pawns, copy_pawns)
         score = score_counting(not player1, pawns, copy_pawns, 0)
-        # print('[AI] SCORE {}'.format(score))
+        print('[AI] SCORE {}'.format(score))
         pawns = copy_pawns
         if score > best_score:
             best_score = score
             best_move = move
-        elif score == best_score and random.randint(1, 2) % 2 == 0:
+        elif score == best_score and random.randint(1, 10) > 3:
             best_score = score
             best_move = move
         print('[AI] MOVES ANALYZED {} %'.format(int((move_number * 100) / moves_number)))

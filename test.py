@@ -1,3 +1,2 @@
-import random
-for i in range(16):
-    print(random.randint(1,2))
+for i in range(1, 8):
+    print(i)
