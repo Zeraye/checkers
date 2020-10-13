@@ -111,33 +111,33 @@ def manage_move(old_pos, new_pos, pawns, player1):
 
 # function for calculating advantage
 def calc_advantage(pawns, old_pawns):
-    cukierki = 0  # advantage
+    cookies = 0  # advantage
     # winning
-    if len(possible_moves(pawns, 1)) == 0: cukierki += math.inf
+    if len(possible_moves(pawns, 1)) == 0: cookies += math.inf
     # losing
-    if len(possible_moves(pawns, 0)) == 0: cukierki -= math.inf
+    if len(possible_moves(pawns, 0)) == 0: cookies -= math.inf
     # upgrading own pawn
-    if count_upgraded(0, pawns) > count_upgraded(0, old_pawns): cukierki += 10
+    if count_upgraded(0, pawns) > count_upgraded(0, old_pawns): cookies += 10
     # upgrading enemy's pawn
-    if count_upgraded(1, pawns) > count_upgraded(1, old_pawns): cukierki -= 10
+    if count_upgraded(1, pawns) > count_upgraded(1, old_pawns): cookies -= 10
     # capturing enemy's upgraded pawn
-    if count_pawns(1, pawns, 1) < count_pawns(1, old_pawns, 1): cukierki += 5
+    if count_pawns(1, pawns, 1) < count_pawns(1, old_pawns, 1): cookies += 5
     # having upgraded pawn captured
-    if count_pawns(0, pawns, 1) < count_pawns(0, old_pawns, 1): cukierki -= 5
+    if count_pawns(0, pawns, 1) < count_pawns(0, old_pawns, 1): cookies -= 5
     # capturing enemy's pawn
-    if count_pawns(1, pawns) < count_pawns(1, old_pawns): cukierki += 3
+    if count_pawns(1, pawns) < count_pawns(1, old_pawns): cookies += 3
     # having pawn captured
-    if count_pawns(0, pawns) < count_pawns(0, old_pawns): cukierki -= 3
+    if count_pawns(0, pawns) < count_pawns(0, old_pawns): cookies -= 3
     # having more possible moves after move or enemy has less possible moves
     if len(possible_moves(pawns, 0)) > len(possible_moves(old_pawns, 0)) or \
         len(possible_moves(pawns, 1)) < len(possible_moves(old_pawns, 1)):
-            cukierki += 1
+            cookies += 1
     # having less possible moves after move or enemy has more possible moves
     if len(possible_moves(pawns, 0)) < len(possible_moves(old_pawns, 0)) or \
         len(possible_moves(pawns, 1)) > len(possible_moves(old_pawns, 1)):
-            cukierki -= 1
+            cookies -= 1
     # returning advantage
-    return cukierki
+    return cookies
 
 def make_best_move(pawns, player1, max_depth):
     print('[AI] MAX DEPTH = {}'.format(max_depth))
