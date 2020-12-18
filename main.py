@@ -14,7 +14,6 @@ pygame.display.set_caption('Checkers')
 # main function
 def main(screen):
     # inital game settings
-    max_depth = 1
     pawns = []
     player1 = True
     pos = None
@@ -54,7 +53,7 @@ def main(screen):
         # drawing board and objects
         draw.draw_main(screen, pos, pawns)
         # computer moving
-        if not player1: player1, pawns = func.make_best_move(pawns, player1, max_depth)
+        if not player1: player1, pawns = func.make_best_move(pawns, player1)
 
 # running game
 if __name__ == '__main__':
